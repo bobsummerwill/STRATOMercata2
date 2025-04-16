@@ -1,0 +1,31 @@
+buildscript {
+    ext {
+        buildToolsVersion = "33.0.0"
+        minSdkVersion = 21
+        compileSdkVersion = 33
+        targetSdkVersion = 33
+        ndkVersion = "23.1.7779620"
+    }
+    repositories {
+        maven {
+            url 'https://dl.google.com/dl/android/maven2/'
+        }
+        maven {
+            url 'https://repo.maven.apache.org/maven2/'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.2.2'
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url 'https://dl.google.com/dl/android/maven2/'
+        }
+        maven {
+            url 'https://repo.maven.apache.org/maven2/'
+        }
+    }
+} 

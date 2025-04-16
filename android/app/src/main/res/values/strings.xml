@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">STRATO MERCATA</string>
+    <string name="gold_price_label">Current Gold Price (USD/oz)</string>
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="amount">Amount (oz)</string>
+    <string name="price">Price (USD)</string>
+    <string name="execute">Execute Trade</string>
+    <string name="chart_title">Gold Price Chart</string>
+    <string name="app_subtitle">Gold Trading Platform</string>
+</resources>
