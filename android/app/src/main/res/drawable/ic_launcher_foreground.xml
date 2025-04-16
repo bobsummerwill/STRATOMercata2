@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Scale and center the gold coin in the adaptive icon space -->
+    <group
+        android:scaleX="3.0"
+        android:scaleY="3.0"
+        android:translateX="30"
+        android:translateY="30">
+        
+        <!-- Outer circle (coin edge) -->
+        <path
+            android:fillColor="#D4AF37"
+            android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2z"/>
+        
+        <!-- Inner circle (coin face) -->
+        <path
+            android:fillColor="#F1C232"
+            android:pathData="M12,4c-4.42,0 -8,3.58 -8,8s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8z"/>
+        
+        <!-- Dollar/currency symbol -->
+        <path
+            android:fillColor="#D4AF37"
+            android:pathData="M12,7v2h-1v1h1v1h-1v1h1v2h1v-2h1v-1h-1v-1h1v-1h-1V7h-1z"/>
+        
+        <!-- Highlights -->
+        <path
+            android:fillColor="#F7E394"
+            android:pathData="M8,8.5C8.83,7.5 10.2,7 12,7c0.5,0 1,0.08 1.5,0.22C13.8,7.08 14,7 14,7c-2.5,0 -4.55,1 -5.5,2.5 -0.4,0.67 -0.5,1.33 -0.5,2 0,-0.67 0,-1.33 0,-2z"/>
+    </group>
+</vector>

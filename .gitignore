@@ -1,1 +1,55 @@
-node_modules
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnp/
+.pnp.js
+
+# Android/IntelliJ
+android/app/build/
+android/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/gradle/
+android/gradlew
+android/gradlew.bat
+*.iml
+.idea/
+
+# iOS
+ios/build/
+ios/Pods/
+ios/Podfile.lock
+ios/*.xcworkspace
+ios/*.xcodeproj/*
+!ios/*.xcodeproj/project.pbxproj
+!ios/*.xcodeproj/xcshareddata/
+!ios/*.xcworkspace/contents.xcworkspacedata
+
+# Build
+/build/
+/dist/
+/out/
+
+# Debug
+.DS_Store
+*.log
+logs/
+*.log.*
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+/coverage/
+.jest/
+
+# Misc
+.tmp/
+.temp/
