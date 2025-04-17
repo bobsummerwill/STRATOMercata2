@@ -142,9 +142,10 @@ public class AssetsView extends View implements AssetsService.OnDataLoadedListen
         if (dataLoaded) {
             // Calculate height based on the number of assets
             List<AssetsService.AssetGroup> sortedAssets = assetsService.getSortedAssets();
-            height = PADDING * 4 + TEXT_SIZE_TITLE + TEXT_SIZE_HEADER * 2 + ROW_HEIGHT * 3 + 
-                    PADDING * 2 + TEXT_SIZE_HEADER + TEXT_SIZE_CONTENT + PADDING + 
-                    ROW_HEIGHT * (sortedAssets.size() + 1) + PADDING * 2;
+            height = PADDING * 3 + TEXT_SIZE_TITLE + // Title only
+                    TEXT_SIZE_HEADER * 2 + ROW_HEIGHT * 3 + // Total Value section
+                    PADDING * 2 + TEXT_SIZE_HEADER + TEXT_SIZE_CONTENT + PADDING + // Asset Breakdown section
+                    ROW_HEIGHT * (sortedAssets.size() + 1) + PADDING * 2; // Asset table
         } else if (errorMessage != null) {
             // Height for error message
             height = 300;
@@ -200,8 +201,8 @@ public class AssetsView extends View implements AssetsService.OnDataLoadedListen
         String userCommonName = assetsService.getUserCommonName();
         Map<String, String> latestPrices = assetsService.getLatestPrices();
         
-        // Draw title
-        canvas.drawText("User Assets", PADDING, PADDING + TEXT_SIZE_TITLE, titlePaint);
+        // Draw title with username
+        canvas.drawText("User Assets for " + userCommonName, PADDING, PADDING + TEXT_SIZE_TITLE, titlePaint);
         
         // Draw Total Value section
         int y = PADDING + TEXT_SIZE_TITLE + PADDING;
@@ -259,15 +260,65 @@ public class AssetsView extends View implements AssetsService.OnDataLoadedListen
             return;
         }
         
-        // Draw asset count
+        // Draw asset count (without owner name)
         y += TEXT_SIZE_HEADER + PADDING;
         canvas.drawText("Found " + sortedAssets.size() + " unique asset classes (across " + 
-                (fungibleTokensCount + nonFungibleTokensCount + cataTokensCount) + " tokens) for owner: " + 
-                userCommonName, PADDING, y + TEXT_SIZE_CONTENT, contentPaint);
+                (fungibleTokensCount + nonFungibleTokensCount + cataTokensCount) + " tokens)", 
+                PADDING, y + TEXT_SIZE_CONTENT, contentPaint);
         
         // Draw asset breakdown table
         y += TEXT_SIZE_CONTENT + PADDING;
         drawAssetBreakdownTable(canvas, width, y, sortedAssets, latestPrices);
+    }
+    
+    /**
+     * Truncates text to fit within a specified width with a buffer
+     * @param text The text to truncate
+     * @param maxWidth The maximum width allowed in pixels
+     * @param paint The paint used to measure text width
+     * @param buffer Additional buffer space in pixels
+     * @return Truncated string with ellipsis if needed
+     */
+    private String truncateTextToFit(String text, float maxWidth, Paint paint, float buffer) {
+        if (text == null) {
+            return "";
+        }
+        
+        float availableWidth = maxWidth - buffer;
+        float textWidth = paint.measureText(text);
+        
+        // If text fits, return it as is
+        if (textWidth <= availableWidth) {
+            return text;
+        }
+        
+        // Text needs truncation
+        String ellipsis = "...";
+        float ellipsisWidth = paint.measureText(ellipsis);
+        
+        // If even ellipsis doesn't fit, return empty string
+        if (ellipsisWidth > availableWidth) {
+            return "";
+        }
+        
+        // Find how many characters we can fit
+        int length = text.length();
+        int charsThatFit = 0;
+        
+        while (charsThatFit < length) {
+            float width = paint.measureText(text, 0, charsThatFit + 1) + ellipsisWidth;
+            if (width > availableWidth) {
+                break;
+            }
+            charsThatFit++;
+        }
+        
+        // Return truncated text with ellipsis
+        if (charsThatFit > 0) {
+            return text.substring(0, charsThatFit) + ellipsis;
+        } else {
+            return ellipsis;
+        }
     }
     
     private void drawAssetBreakdownTable(Canvas canvas, int width, int y, List<AssetsService.AssetGroup> sortedAssets, Map<String, String> latestPrices) {
@@ -331,11 +382,24 @@ public class AssetsView extends View implements AssetsService.OnDataLoadedListen
                 }
             }
             
+            // Calculate available width for each column (with buffer)
+            float nameColWidth = assetCol1Width - TABLE_PADDING * 2;
+            float quantityColWidth = assetCol2Width - TABLE_PADDING * 2;
+            float tokenCountColWidth = assetCol3Width - TABLE_PADDING * 2;
+            float valueColWidth = assetCol4Width - TABLE_PADDING * 2;
+            float bufferSpace = 10; // Additional buffer space in pixels
+            
+            // Truncate text to fit in columns
+            String truncatedName = truncateTextToFit(asset.name, nameColWidth, contentPaint, bufferSpace);
+            String truncatedQuantity = truncateTextToFit(quantityDisplay, quantityColWidth, contentPaint, bufferSpace);
+            String truncatedTokenCount = truncateTextToFit(tokenCountDisplay, tokenCountColWidth, contentPaint, bufferSpace);
+            String truncatedValue = truncateTextToFit(valueDisplay, valueColWidth, contentPaint, bufferSpace);
+            
             // Draw asset data
-            canvas.drawText(asset.name, PADDING + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
-            canvas.drawText(quantityDisplay, PADDING + assetCol1Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
-            canvas.drawText(tokenCountDisplay, PADDING + assetCol1Width + assetCol2Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
-            canvas.drawText(valueDisplay, PADDING + assetCol1Width + assetCol2Width + assetCol3Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
+            canvas.drawText(truncatedName, PADDING + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
+            canvas.drawText(truncatedQuantity, PADDING + assetCol1Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
+            canvas.drawText(truncatedTokenCount, PADDING + assetCol1Width + assetCol2Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
+            canvas.drawText(truncatedValue, PADDING + assetCol1Width + assetCol2Width + assetCol3Width + TABLE_PADDING, y + ROW_HEIGHT - TABLE_PADDING, contentPaint);
             
             y += ROW_HEIGHT;
         }
