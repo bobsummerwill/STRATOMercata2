@@ -16,6 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="140dp" />
 
+        <com.stratomercata.AssetsView
+            android:id="@+id/assets_view"
+            android:layout_width="match_parent"
+            android:layout_height="800dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp" />
+
         <com.stratomercata.GoldPriceView
             android:id="@+id/gold_price_view"
             android:layout_width="match_parent"

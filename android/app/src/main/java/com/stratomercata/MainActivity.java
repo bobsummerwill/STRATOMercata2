@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private HeaderView headerView;
+    private AssetsView assetsView;
     private GoldPriceView goldPriceView;
     private PriceChartView priceChartView;
     private TradeFormView tradeFormView;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         
         headerView = findViewById(R.id.header_view);
+        assetsView = findViewById(R.id.assets_view);
         goldPriceView = findViewById(R.id.gold_price_view);
         priceChartView = findViewById(R.id.price_chart_view);
         tradeFormView = findViewById(R.id.trade_form_view);
